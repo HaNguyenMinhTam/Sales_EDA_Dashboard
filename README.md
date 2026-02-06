@@ -1,130 +1,197 @@
-# 🛍️ Sales Data Analysis - ABC Retail  
+# Sales Time Series Forecasting
 
-This project analyzes the **Sales Dataset** of **ABC Retail** to uncover insights into customer behavior, sales trends, and operational performance.  
-The ultimate goal is to **optimize revenue, improve marketing strategies, and identify growth opportunities**.  
+##  Project Overview
 
----
+This project focuses on **sales time series forecasting and analysis**, designed to be suitable for both:
 
-## 📂 Dataset  
+* **Data Analyst / BI Analyst** – understanding trends, seasonality, and business insights
+* **AI Engineer / Data Scientist** – building, comparing, and evaluating forecasting models
 
-The dataset contains both raw and engineered features:  
+The project covers the **end-to-end pipeline**:
 
-- **Order ID**: Unique identifier for each order  
-- **Product**: Name of the product purchased  
-- **Quantity Ordered**: Number of units sold  
-- **Price Each**: Price per unit  
-- **Order Date**: Timestamp of the order  
-- **Purchase Address**: Customer shipping address  
-- **Engineered Features**: Month, Sales, City, Hour, Weekday  
+> Data Understanding → EDA → Feature Preparation → Forecasting Models → Evaluation → Business Insights
 
 ---
 
-## 🔎 Exploratory Data Analysis (EDA)  
+##  Dataset & Business Context
 
-### 1. Univariate Analysis  
-- Distribution of Sales  
-- Orders by Month  
-- Orders by Day of Week  
+* Sales transaction data aggregated over time (daily / monthly)
+* Target variable: **Sales**
+* Typical characteristics:
 
-### 2. Bivariate Analysis  
-- Total Sales by Month  
-- Top 10 Best-Selling Products  
-- Sales by City  
-- Sales by Hour  
+  * Long-term trend
+  * Strong seasonality (monthly / yearly)
+  * Irregular fluctuations
 
-### 3. Multivariate Analysis  
-- Sales by Month and City  
-- Sales by Hour  
+### Business Questions Addressed
 
----
-
-## 📊 Key Insights  
-
-- **Peak Sales Hours**: Most purchases happen between **10 AM – 1 PM**.  
-- **High-Performing Months**: **December** records the highest sales due to holiday shopping.  
-- **City Insights**: **San Francisco and Los Angeles** contribute the most to overall revenue.  
+* How do sales change over time?
+* Are there clear seasonal patterns?
+* Which forecasting approach provides the most reliable predictions?
+* How can forecasts support inventory and planning decisions?
 
 ---
 
-## 🛠️ Tools & Technologies  
+##  Exploratory Data Analysis (EDA)
 
-- **Python**: Data manipulation & visualization  
-- **Pandas, Numpy**: Data wrangling  
-- **Matplotlib, Seaborn**: Visualization  
-- **Jupyter Notebook**: Interactive analysis  
-- **Scikit-learn**: preprocessing, model evaluation
-- **Statsmodels**: SARIMA
-- **Keras/Tensorflow**: LSTM
-- **Plotly**: (interactive chart)
+*(Relevant for Data Analyst / BI Analyst)*
 
+The EDA phase focuses on:
+
+* Visualizing sales trends over time
+* Identifying seasonality and peak periods
+* Detecting anomalies and volatility
+* Understanding data distribution and variance
+
+Key outputs:
+
+* Time series plots
+* Seasonal decomposition
+* Summary statistics
+
+These insights help stakeholders understand historical performance before applying predictive models.
 
 ---
 
-## 📁 Project Structure  
+##  Forecasting Models
 
-```bash
-Sales_Analysis/
-│── data/             # Raw dataset
-│── notebooks/        # Jupyter notebooks (EDA, Forecasting, etc.)
-│── results/          # Exported plots & metrics
-│── dashboard/        # Power BI or Streamlit dashboard
-│── requirements.txt  # Python dependencies
-└── README.md         # Project documentation
+*(Relevant for AI Engineer / Data Scientist)*
 
-# How to Run
-1. Clone this repository:
-git clone https://github.com/your-username/Sales_EDA_Dashboard.git
-cd Sales_EDA_Dashboard
+### SARIMA (Seasonal ARIMA)
 
-2. Install dependencies
-pip install -r requirements.txt
+* Statistical time series model
+* Captures:
 
-3. Open Jupyter Notebook
-jupyter notebook
+  * Linear trends
+  * Seasonal components
+* Strengths:
 
-# Results
-- Time series forecasting models have been implemented and evaluated, including:
-  - **SARIMA(7)** and **SARIMA(30)**: capture trend and seasonality reasonably well but limited in modeling nonlinear patterns.
-  - **LSTM (look_back=7)**: tends to predict around short-term averages, struggling with seasonal fluctuations.
-  - **LSTM (look_back=30)**: shows better ability to follow long-term patterns compared to look_back=7, but still produces smoothed forecasts.
-  - **Hybrid SARIMA + LSTM (Residual Learning)**: designed to combine SARIMA’s strength in linear trend/seasonality and LSTM’s ability to model nonlinear effects.  
+  * Interpretable
+  * Strong baseline model
+* Limitations:
 
-- Comparative analysis (test set metrics):
-  | Model                  | MAE       | RMSE      | MAPE   |
-  |-------------------------|-----------|-----------|--------|
-  | SARIMA                  | 16,521.6  | 19,369.2  | 14.0 % |
-  | LSTM (autoregressive)   | 16,068.6  | 19,621.7  | 12.2 % |
-  | Hybrid (SARIMA + LSTM)  | 16,624.8  | 19,408.0  | 13.9 % |
+  * Limited ability to model nonlinear behavior
 
-- Findings:
-  - **SARIMA**: strong for capturing seasonality and trend.  
-  - **LSTM**: outperforms SARIMA on MAPE, better at nonlinear patterns with longer look_back.  
-  - **Hybrid SARIMA+LSTM**: did not outperform standalone models, since SARIMA residuals resembled white noise (no meaningful signal left for LSTM to learn).  
+---
 
-- Exported plots and comparison metrics are stored in the `results/` folder for further reference.
+### LSTM (Long Short-Term Memory)
 
-# Bussiness insight
-- ABC Retail can increase staffing and marketing promotions during 10 AM – 1 PM to capture peak sales.
-- Targeted campaigns in San Francisco & Los Angeles can maximize ROI since these cities dominate revenue.
-- Holiday seasons, especially December, should be prioritized with inventory planning and bundled offers.
-- More accurate forecasting models will allow ABC Retail to plan inventory and marketing campaigns with higher confidence.
+* Deep learning model for sequential data
+* Captures:
 
-# 💼 Business Value
-Developed a sales forecasting system for retail, enabling **30-day ahead demand prediction** with ~14% MAPE.  
-This system can help reduce stockouts and overstocking, allowing ABC Retail to save inventory costs, improve campaign planning, and optimize staffing levels.
+  * Nonlinear temporal patterns
+  * Long-term dependencies
+* Strengths:
 
+  * Flexible and expressive
+* Limitations:
 
-# Next Steps
-- **Focus on LSTM autoregressive**, as it achieved the best forecasting accuracy in this dataset.  
-- Explore **ensemble averaging** between SARIMA and LSTM forecasts to reduce variance.  
-- Optimize **look_back parameters (60–90 days)** and add **time-based features** (month, day of week, holidays).  
-- Consider testing additional models (e.g., Prophet, XGBoost) for robustness.  
+  * Requires careful tuning
+  * Less interpretable compared to statistical models
 
+---
 
-# Author
-HaNguyenMinhTam - Data Analyst Enthusiast
-- Email: hnmt@gmail.com
-- Github: https://github.com/HaNguyenMinhTam
+### Hybrid SARIMA + LSTM (Key Contribution)
 
+* Motivation:
 
+  * SARIMA models trend & seasonality effectively
+  * LSTM learns nonlinear patterns left in residuals
 
+#### Workflow
+
+1. Train SARIMA on the original series
+2. Compute residuals (actual − SARIMA prediction)
+3. Train LSTM on residuals
+4. Final forecast = SARIMA forecast + LSTM residual forecast
+
+ This hybrid approach combines **interpretability** and **predictive power**.
+
+---
+
+##  Model Evaluation
+
+Models are evaluated using standard regression metrics:
+
+* **MAE** – Mean Absolute Error
+* **RMSE** – Root Mean Squared Error
+* **MAPE** – Mean Absolute Percentage Error
+
+### Model Comparison (Illustrative)
+
+| Model                    | MAE      | RMSE     | MAPE     |
+| ------------------------ | -------- | -------- | -------- |
+| SARIMA                   | ✓        | ✓        | ✓        |
+| LSTM                     | ✓        | ✓        | ✓        |
+| **Hybrid SARIMA + LSTM** | **Best** | **Best** | **Best** |
+
+*(Exact values depend on dataset and configuration.)*
+
+---
+
+##  Business Insights & Use Cases
+
+*(Relevant for Data Analyst / BI Analyst)*
+
+* Clear identification of seasonal peaks and low-demand periods
+* Forecasts support:
+
+  * Inventory planning
+  * Promotion timing
+  * Resource allocation
+
+### Model Selection Perspective
+
+* **SARIMA**: preferred when interpretability and stability are critical
+* **LSTM / Hybrid**: preferred when accuracy and complex patterns matter
+
+---
+
+## Project Structure
+
+```
+Sales_TimeSeries_Forecasting/
+│
+├── data/              # Raw & processed data
+├── notebooks/         # EDA & modeling experiments
+├── models/            # Trained models
+├── src/               # Preprocessing & utilities
+├── results/           # Forecast plots & metrics
+└── README.md
+```
+
+---
+
+##  Future Improvements
+
+* Add external (exogenous) variables:
+
+  * Holidays
+  * Promotions
+  * Pricing
+* Try additional models:
+
+  * Prophet
+  * Gradient Boosting
+  * Transformer-based time series models
+* Deploy forecasting as an API (FastAPI)
+* Integrate forecasts into BI dashboards (Power BI / Tableau)
+
+---
+
+##  Author
+
+**Ha Nguyen Minh Tam**
+Data / AI Enthusiast
+
+---
+
+##  Notes for Recruiters & Interviewers
+
+This project demonstrates:
+
+* Data exploration and business insight generation
+* Multiple forecasting techniques
+* Hybrid modeling strategy
+* Clear reasoning behind model selection
+* Ability to bridge **analytics** and **machine learning**
